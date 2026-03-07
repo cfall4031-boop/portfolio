@@ -6,13 +6,15 @@ export const templateCodeMap: Record<string, string> = {
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
+import { Zap, Lock, BarChart2, RefreshCw, Puzzle, Globe } from "lucide-react";
+
 const FEATURES = [
-  { icon: "⚡", title: "Lightning Fast", desc: "Edge-optimized delivery. Sub-100ms globally." },
-  { icon: "🔒", title: "Secure by Default", desc: "SOC2 compliant. Zero-trust architecture." },
-  { icon: "📊", title: "Real-time Analytics", desc: "Live dashboards. No extra setup needed." },
-  { icon: "🔄", title: "Auto Scaling", desc: "From 1 to 1M users without config changes." },
-  { icon: "🧩", title: "API-First", desc: "RESTful + GraphQL. Integrates with anything." },
-  { icon: "🌍", title: "Global CDN", desc: "200+ edge locations. Always close to users." },
+  { icon: Zap,       title: "Lightning Fast",      desc: "Edge-optimized delivery. Sub-100ms globally." },
+  { icon: Lock,      title: "Secure by Default",   desc: "SOC2 compliant. Zero-trust architecture." },
+  { icon: BarChart2, title: "Real-time Analytics", desc: "Live dashboards. No extra setup needed." },
+  { icon: RefreshCw, title: "Auto Scaling",        desc: "From 1 to 1M users without config changes." },
+  { icon: Puzzle,    title: "API-First",           desc: "RESTful + GraphQL. Integrates with anything." },
+  { icon: Globe,     title: "Global CDN",          desc: "200+ edge locations. Always close to users." },
 ];
 
 export function SaasDark() {
@@ -195,9 +197,11 @@ function PhoneFrame() {
         <div style={{
           width: 52, height: 52, borderRadius: 14,
           background: "linear-gradient(135deg, #22d3ee, #6366f1)",
-          marginBottom: 16, fontSize: 22, display: "flex",
+          marginBottom: 16, display: "flex",
           alignItems: "center", justifyContent: "center",
-        }}>✦</div>
+        }}>
+          <div style={{ width: 20, height: 20, borderRadius: 4, background: "rgba(255,255,255,0.9)" }} />
+        </div>
       </div>
     </div>
   );
@@ -315,11 +319,13 @@ function ProductTiltCard() {
           <div style={{
             width: 160, height: 160,
             background: "linear-gradient(135deg, #4ade80, #22d3ee)",
-            borderRadius: 32, fontSize: 64, display: "flex",
+            borderRadius: 32, display: "flex",
             alignItems: "center", justifyContent: "center",
             boxShadow: "0 20px 60px rgba(74,222,128,0.3)",
             transform: "translateZ(20px)",
-          }}>✦</div>
+          }}>
+            <div style={{ width: 56, height: 56, borderRadius: 14, background: "rgba(255,255,255,0.25)" }} />
+          </div>
         </div>
       </motion.div>
     </div>

@@ -80,7 +80,7 @@ export function StartupBold() {
             width: 6, height: 6, borderRadius: "50%", background: "#f97316",
             display: "inline-block", animation: "ping 1.5s ease-in-out infinite",
           }} />
-          <span style={{ fontSize: 12, color: "#fb923c", fontWeight: 500 }}>We just raised $4.2M — Join us 🚀</span>
+          <span style={{ fontSize: 12, color: "#fb923c", fontWeight: 500 }}>We just raised $4.2M — Join us</span>
         </motion.div>
 
         <motion.h1

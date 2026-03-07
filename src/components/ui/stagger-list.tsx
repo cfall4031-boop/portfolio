@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Zap, Paintbrush2, Eye, Smartphone } from "lucide-react";
 
 const ITEMS = [
-  { id: 1, icon: "⚡", label: "Lightning fast", sub: "60fps animations" },
-  { id: 2, icon: "🎨", label: "Pixel perfect", sub: "Designed with care" },
-  { id: 3, icon: "♿", label: "Accessible", sub: "ARIA compliant" },
-  { id: 4, icon: "📱", label: "Responsive", sub: "Works everywhere" },
+  { id: 1, icon: Zap, label: "Lightning fast", sub: "60fps animations" },
+  { id: 2, icon: Paintbrush2, label: "Pixel perfect", sub: "Designed with care" },
+  { id: 3, icon: Eye, label: "Accessible", sub: "ARIA compliant" },
+  { id: 4, icon: Smartphone, label: "Responsive", sub: "Works everywhere" },
 ];
 
 export function StaggerList() {
@@ -35,7 +36,12 @@ export function StaggerList() {
                 border: "1px solid var(--border)",
               }}
             >
-              <span className="text-lg">{item.icon}</span>
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "var(--accent-glow)" }}
+              >
+                <item.icon className="w-4 h-4" style={{ color: "var(--accent)" }} />
+              </div>
               <div>
                 <p className="text-sm font-medium" style={{ color: "var(--text)" }}>{item.label}</p>
                 <p className="text-xs" style={{ color: "var(--text-subtle)" }}>{item.sub}</p>

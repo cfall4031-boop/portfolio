@@ -2,22 +2,23 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { Zap, Lock, BarChart2, RefreshCw, Puzzle, Globe } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const FEATURES = [
-  { icon: "⚡", title: "Lightning Fast", desc: "Edge-optimized delivery. Sub-100ms globally." },
-  { icon: "🔒", title: "Secure by Default", desc: "SOC2 compliant. Zero-trust architecture." },
-  { icon: "📊", title: "Real-time Analytics", desc: "Live dashboards. No extra setup needed." },
-  { icon: "🔄", title: "Auto Scaling", desc: "From 1 to 1M users without config changes." },
-  { icon: "🧩", title: "API-First", desc: "RESTful + GraphQL. Integrates with anything." },
-  { icon: "🌍", title: "Global CDN", desc: "200+ edge locations. Always close to users." },
+  { icon: Zap, title: "Lightning Fast", desc: "Edge-optimized delivery. Sub-100ms globally." },
+  { icon: Lock, title: "Secure by Default", desc: "SOC2 compliant. Zero-trust architecture." },
+  { icon: BarChart2, title: "Real-time Analytics", desc: "Live dashboards. No extra setup needed." },
+  { icon: RefreshCw, title: "Auto Scaling", desc: "From 1 to 1M users without config changes." },
+  { icon: Puzzle, title: "API-First", desc: "RESTful + GraphQL. Integrates with anything." },
+  { icon: Globe, title: "Global CDN", desc: "200+ edge locations. Always close to users." },
 ];
 
 const LOGOS = ["Stripe", "Vercel", "Linear", "Notion", "Figma", "GitHub", "Supabase", "Railway"];
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
-function FeatureCard({ icon, title, desc, index, inView }: {
-  icon: string; title: string; desc: string; index: number; inView: boolean;
+function FeatureCard({ icon: Icon, title, desc, index, inView }: {
+  icon: React.ComponentType<{ size?: number; color?: string }>; title: string; desc: string; index: number; inView: boolean;
 }) {
   return (
     <motion.div
@@ -31,7 +32,13 @@ function FeatureCard({ icon, title, desc, index, inView }: {
         padding: "24px",
       }}
     >
-      <div style={{ fontSize: 28, marginBottom: 12 }}>{icon}</div>
+      <div style={{
+        width: 36, height: 36, borderRadius: 10, marginBottom: 16,
+        background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.2)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <Icon size={16} color="#818cf8" />
+      </div>
       <h3 style={{ color: "#fafafa", fontSize: 15, fontWeight: 600, marginBottom: 6 }}>{title}</h3>
       <p style={{ color: "#888", fontSize: 13, lineHeight: 1.6 }}>{desc}</p>
     </motion.div>

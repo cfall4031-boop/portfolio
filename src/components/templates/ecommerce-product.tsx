@@ -2,15 +2,16 @@
 
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Leaf, Truck, Lock, RotateCcw, Star, Gift } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const FEATURES = [
-  { icon: "🌱", title: "Sustainably sourced", desc: "Carbon neutral since 2022" },
-  { icon: "🚚", title: "Free shipping", desc: "On orders over $50" },
-  { icon: "🔒", title: "Secure checkout", desc: "256-bit SSL encryption" },
-  { icon: "↩️", title: "30-day returns", desc: "No questions asked" },
-  { icon: "⭐", title: "Award winning", desc: "Best design 2025" },
-  { icon: "🎁", title: "Gift wrapping", desc: "Free on any order" },
+  { icon: Leaf, title: "Sustainably sourced", desc: "Carbon neutral since 2022" },
+  { icon: Truck, title: "Free shipping", desc: "On orders over $50" },
+  { icon: Lock, title: "Secure checkout", desc: "256-bit SSL encryption" },
+  { icon: RotateCcw, title: "30-day returns", desc: "No questions asked" },
+  { icon: Star, title: "Award winning", desc: "Best design 2025" },
+  { icon: Gift, title: "Gift wrapping", desc: "Free on any order" },
 ];
 
 const REVIEWS = [
@@ -78,11 +79,10 @@ function ProductTiltCard() {
             background: "linear-gradient(135deg, #4ade80, #22d3ee)",
             borderRadius: 32,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 64,
             boxShadow: "0 20px 60px rgba(74,222,128,0.3)",
             transform: "translateZ(20px)",
           }}>
-            ✦
+            <div style={{ width: 56, height: 56, borderRadius: 14, background: "rgba(255,255,255,0.25)" }} />
           </div>
 
           {/* Price badge — floating */}
@@ -163,7 +163,7 @@ export function EcommerceProduct() {
             color: "#4ade80", fontSize: 11, fontWeight: 700,
             letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12,
           }}>
-            Verdant Studio ✦
+            Verdant Studio
           </p>
 
           <h1 style={{
@@ -273,7 +273,13 @@ export function EcommerceProduct() {
                   borderRadius: 12, padding: "16px",
                 }}
               >
-                <span style={{ fontSize: 20, flexShrink: 0 }}>{f.icon}</span>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                  background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.15)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <f.icon size={14} color="#4ade80" />
+                </div>
                 <div>
                   <p style={{ color: "#fafafa", fontSize: 13, fontWeight: 600, marginBottom: 2 }}>{f.title}</p>
                   <p style={{ color: "#555", fontSize: 12 }}>{f.desc}</p>

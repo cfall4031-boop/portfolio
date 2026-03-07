@@ -2,20 +2,21 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { Bell, Lock, Zap, Moon, Wifi, Target } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const FEATURES = [
-  { icon: "🔔", title: "Smart Alerts", desc: "Real-time push notifications" },
-  { icon: "🔒", title: "Private & Secure", desc: "End-to-end encrypted" },
-  { icon: "⚡", title: "Instant Sync", desc: "Cross-device in milliseconds" },
-  { icon: "🌙", title: "Dark Mode", desc: "Easy on your eyes, always" },
-  { icon: "📶", title: "Works Offline", desc: "Full offline support" },
-  { icon: "🎯", title: "Smart Focus", desc: "AI-powered suggestions" },
+  { icon: Bell, title: "Smart Alerts", desc: "Real-time push notifications" },
+  { icon: Lock, title: "Private & Secure", desc: "End-to-end encrypted" },
+  { icon: Zap, title: "Instant Sync", desc: "Cross-device in milliseconds" },
+  { icon: Moon, title: "Dark Mode", desc: "Easy on your eyes, always" },
+  { icon: Wifi, title: "Works Offline", desc: "Full offline support" },
+  { icon: Target, title: "Smart Focus", desc: "AI-powered suggestions" },
 ];
 
 const STATS = [
   { value: "10M+", label: "Downloads" },
-  { value: "4.9★", label: "Rating" },
+  { value: "4.9", label: "Rating" },
   { value: "150+", label: "Countries" },
 ];
 
@@ -50,9 +51,8 @@ function PhoneFrame() {
           width: 52, height: 52, borderRadius: 14,
           background: "linear-gradient(135deg, #22d3ee, #6366f1)",
           marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 22,
         }}>
-          ✦
+          <div style={{ width: 20, height: 20, borderRadius: 4, background: "rgba(255,255,255,0.9)" }} />
         </div>
         {/* Fake content lines */}
         {[80, 60, 75, 55, 70, 45, 80, 50].map((w, i) => (
@@ -81,8 +81,8 @@ function PhoneFrame() {
   );
 }
 
-function FeatureBubble({ icon, title, desc, style }: {
-  icon: string; title: string; desc: string; style?: React.CSSProperties;
+function FeatureBubble({ Icon, title, desc, style }: {
+  Icon: React.ComponentType<{ size?: number; color?: string }>; title: string; desc: string; style?: React.CSSProperties;
 }) {
   return (
     <div style={{
@@ -93,7 +93,13 @@ function FeatureBubble({ icon, title, desc, style }: {
       maxWidth: 160,
       ...style,
     }}>
-      <div style={{ fontSize: 18, marginBottom: 4 }}>{icon}</div>
+      <div style={{
+        width: 28, height: 28, borderRadius: 8, marginBottom: 6,
+        background: "rgba(34,211,238,0.12)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <Icon size={14} color="#22d3ee" />
+      </div>
       <div style={{ color: "#fafafa", fontSize: 12, fontWeight: 600, marginBottom: 2 }}>{title}</div>
       <div style={{ color: "#555", fontSize: 11 }}>{desc}</div>
     </div>
@@ -132,7 +138,7 @@ export function MobileApp() {
             borderRadius: 999, padding: "4px 14px", marginBottom: 28,
           }}
         >
-          <span style={{ fontSize: 14 }}>🚀</span>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22d3ee", display: "inline-block" }} />
           <span style={{ fontSize: 12, color: "#22d3ee", fontWeight: 500 }}>App of the Year 2025 — App Store</span>
         </motion.div>
 
@@ -169,13 +175,13 @@ export function MobileApp() {
           {/* Left bubbles */}
           <div style={{ display: "flex", flexDirection: "column", gap: 12, marginRight: 24 }}>
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
-              <FeatureBubble icon="🔔" title="Smart Alerts" desc="Real-time notifications" />
+              <FeatureBubble Icon={Bell} title="Smart Alerts" desc="Real-time notifications" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-              <FeatureBubble icon="⚡" title="Instant Sync" desc="Cross-device sync" />
+              <FeatureBubble Icon={Zap} title="Instant Sync" desc="Cross-device sync" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
-              <FeatureBubble icon="🌙" title="Dark Mode" desc="Easy on your eyes" />
+              <FeatureBubble Icon={Moon} title="Dark Mode" desc="Easy on your eyes" />
             </motion.div>
           </div>
 
@@ -191,13 +197,13 @@ export function MobileApp() {
           {/* Right bubbles */}
           <div style={{ display: "flex", flexDirection: "column", gap: 12, marginLeft: 24 }}>
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.45 }}>
-              <FeatureBubble icon="🔒" title="Private" desc="End-to-end encrypted" />
+              <FeatureBubble Icon={Lock} title="Private" desc="End-to-end encrypted" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.55 }}>
-              <FeatureBubble icon="📶" title="Offline" desc="Works without internet" />
+              <FeatureBubble Icon={Wifi} title="Offline" desc="Works without internet" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.65 }}>
-              <FeatureBubble icon="🎯" title="AI Focus" desc="Smart suggestions" />
+              <FeatureBubble Icon={Target} title="AI Focus" desc="Smart suggestions" />
             </motion.div>
           </div>
         </div>
@@ -296,7 +302,13 @@ export function MobileApp() {
                 borderRadius: 14, padding: "20px",
               }}
             >
-              <div style={{ fontSize: 24, marginBottom: 10 }}>{f.icon}</div>
+              <div style={{
+                width: 32, height: 32, borderRadius: 8, marginBottom: 12,
+                background: "rgba(34,211,238,0.12)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <f.icon size={15} color="#22d3ee" />
+              </div>
               <h3 style={{ color: "#fafafa", fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{f.title}</h3>
               <p style={{ color: "#555", fontSize: 12, lineHeight: 1.6 }}>{f.desc}</p>
             </motion.div>
