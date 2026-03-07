@@ -10,6 +10,7 @@ const links = [
   { href: "/components", label: "Components" },
   { href: "/design", label: "Design" },
   { href: "/templates", label: "Templates" },
+  { href: "/about", label: "About" },
 ];
 
 export function Navbar() {
@@ -73,7 +74,7 @@ export function Navbar() {
 
         {/* GitHub link */}
         <a
-          href="https://github.com"
+          href="https://github.com/cfall4031-boop"
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm px-3 py-1.5 rounded-md border transition-all hover:opacity-100 opacity-60"

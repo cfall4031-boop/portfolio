@@ -42,8 +42,20 @@ export default function Home() {
             className="w-1.5 h-1.5 rounded-full animate-pulse"
             style={{ backgroundColor: "var(--accent)" }}
           />
-          Open to opportunities
+          Open to freelance &amp; jobs
         </motion.div>
+
+        {/* Name */}
+        <motion.p
+          custom={0.5}
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          className="text-sm font-medium mb-2"
+          style={{ color: "var(--text-subtle)" }}
+        >
+          C. Fall — UI/UX + Development
+        </motion.p>
 
         {/* Heading */}
         <motion.h1
@@ -103,7 +115,7 @@ export default function Home() {
             <ArrowRight className="w-4 h-4" />
           </Link>
           <a
-            href="https://github.com"
+            href="https://github.com/cfall4031-boop"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border transition-all hover:opacity-80"
