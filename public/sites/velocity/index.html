@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VELOCITY — Engineered for the Apex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,300&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Reset ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0A0A0A;
+      --white:   #FFFFFF;
+      --copper:  #C8783A;
+      --copper2: #A85E28;
+      --g400:    #9A9A9A;
+      --g600:    #5C5C5C;
+      --g100:    #F4F4F4;
+      --display: 'Bebas Neue', sans-serif;
+      --body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 52px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(10, 10, 10, 0.07);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #nav.nav-hidden { transform: translateY(-100%); }
+
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      color: var(--black);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 38px;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 0; height: 1px;
+      background: var(--copper);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links li a:hover::after { width: 100%; }
+
+    .nav-cta {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black) !important;
+      text-decoration: none;
+      border: 1.5px solid var(--black);
+      padding: 9px 22px;
+      transition: background 0.22s ease, color 0.22s ease;
+    }
+
+    .nav-cta::after { display: none !important; }
+
+    .nav-cta:hover {
+      background: var(--black);
+      color: var(--white) !important;
+    }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      padding-top: 64px;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-video-outer {
+      position: relative;
+      width: 100%;
+      height: 62vh;
+      min-height: 320px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .hero-video-outer video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    /* Gradient fade: video → white */
+    .hero-video-outer::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 55%;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0)    0%,
+        rgba(255,255,255,0.25) 35%,
+        rgba(255,255,255,0.82) 70%,
+        rgba(255,255,255,1)   100%
+      );
+      pointer-events: none;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 24px 100px;
+      margin-top: -60px;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 18px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: up 0.9s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
+    }
+
+    .hero-headline {
+      font-family: var(--display);
+      font-size: clamp(56px, 9vw, 108px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--black);
+      margin-bottom: 22px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: up 1s cubic-bezier(0.4,0,0.2,1) 0.52s forwards;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--g600);
+      letter-spacing: 0.06em;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: up 0.9s cubic-bezier(0.4,0,0.2,1) 0.72s forwards;
+    }
+
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 40px;
+      opacity: 0;
+      animation: up 0.9s ease 1.1s forwards;
+    }
+
+    .hero-scroll span {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--g400);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, var(--g400), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── STATS BAR ───────────────────────────────────── */
+    .stats-bar {
+      border-top: 1px solid rgba(10,10,10,0.1);
+      border-bottom: 1px solid rgba(10,10,10,0.1);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      padding: 40px 36px;
+      border-right: 1px solid rgba(10,10,10,0.07);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .stat-item:last-child { border-right: none; }
+    .stat-item.visible { opacity: 1; transform: translateY(0); }
+
+    .stat-num {
+      display: block;
+      font-family: var(--display);
+      font-size: 52px;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .stat-num .unit {
+      font-size: 0.62em;
+      color: var(--copper);
+      letter-spacing: 0;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--g400);
+    }
+
+    /* ─── DIVIDER LINE ────────────────────────────────── */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(10,10,10,0.06);
+    }
+
+    /* ─── FEATURES ────────────────────────────────────── */
+    .features-section {
+      padding: 0 48px 0;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .features-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 100px 0 72px;
+      border-bottom: 1px solid rgba(10,10,10,0.08);
+      margin-bottom: 80px;
+    }
+
+    .features-kicker {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 12px;
+    }
+
+    .features-title {
+      font-family: var(--display);
+      font-size: clamp(38px, 4vw, 56px);
+      letter-spacing: 0.04em;
+      color: var(--black);
+      line-height: 0.95;
+    }
+
+    .features-desc {
+      max-width: 320px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--g600);
+      line-height: 1.75;
+      letter-spacing: 0.02em;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      padding-bottom: 100px;
+    }
+
+    .feature-card {
+      opacity: 0;
+      transform: translateY(44px);
+      transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.3s ease;
+      padding: 44px 36px 40px;
+      border: 1px solid rgba(10,10,10,0.06);
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.07);
+    }
+
+    .feature-card.visible { opacity: 1; transform: translateY(0); }
+
+    /* Copper top accent — animates width */
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--copper), var(--copper2));
+      transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+    }
+
+    .feature-card.visible::before { width: 100%; }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      color: var(--copper);
+      margin-bottom: 28px;
+    }
+
+    .feature-name {
+      font-family: var(--display);
+      font-size: 28px;
+      letter-spacing: 0.06em;
+      color: var(--black);
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .feature-text {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--g600);
+    }
+
+    .feature-num {
+      position: absolute;
+      top: 18px; right: 24px;
+      font-family: var(--display);
+      font-size: 72px;
+      color: rgba(10,10,10,0.035);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ─── QUOTE ───────────────────────────────────────── */
+    .quote-wrap {
+      padding: 128px 48px;
+      text-align: center;
+      border-top: 1px solid rgba(10,10,10,0.07);
+      border-bottom: 1px solid rgba(10,10,10,0.07);
+    }
+
+    .quote-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .quote-inner.visible { opacity: 1; transform: translateY(0); }
+
+    .quote-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 32px;
+    }
+
+    .quote-text {
+      font-family: var(--display);
+      font-size: clamp(44px, 7vw, 92px);
+      line-height: 0.93;
+      letter-spacing: 0.03em;
+      color: var(--black);
+      margin-bottom: 44px;
+    }
+
+    .quote-rule {
+      width: 64px;
+      height: 2px;
+      background: var(--copper);
+      margin: 0 auto 32px;
+    }
+
+    .quote-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--g600);
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── CINEMATIC BANNER ────────────────────────────── */
+    .banner {
+      height: 62vh;
+      min-height: 320px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .banner video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+
+    /* subtle vignette on banner */
+    .banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.18) 0%, transparent 30%),
+        linear-gradient(to top,    rgba(255,255,255,0.18) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    /* ─── CTA SECTION ─────────────────────────────────── */
+    .cta-section {
+      padding: 140px 48px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+
+    .cta-section.visible { opacity: 1; transform: translateY(0); }
+
+    .cta-headline {
+      font-family: var(--display);
+      font-size: clamp(54px, 8vw, 100px);
+      letter-spacing: 0.04em;
+      color: var(--black);
+      line-height: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .cta-sub {
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.07em;
+      color: var(--g600);
+      margin-bottom: 52px;
+    }
+
+    .cta-form {
+      display: flex;
+      max-width: 500px;
+      margin: 0 auto;
+      border: 1.5px solid var(--black);
+    }
+
+    .cta-input {
+      flex: 1;
+      padding: 16px 20px;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--black);
+    }
+
+    .cta-input::placeholder { color: var(--g400); }
+
+    .cta-btn {
+      padding: 16px 28px;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.25s ease;
+    }
+
+    .cta-btn:hover { background: var(--copper); }
+
+    .cta-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--g400);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(10,10,10,0.09);
+      padding: 28px 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .footer-brand {
+      font-family: var(--display);
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      color: var(--black);
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--g400);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .footer-socials a {
+      color: var(--g400);
+      text-decoration: none;
+      transition: color 0.22s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-socials a:hover { color: var(--copper); }
+
+    .footer-socials svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* ─── Utility ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Responsive ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      #nav { padding: 0 24px; }
+      .nav-links li:not(:last-child) { display: none; }
+
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-top: 1px solid rgba(10,10,10,0.07); }
+      .stat-item:nth-child(4) { border-top: 1px solid rgba(10,10,10,0.07); border-right: none; }
+
+      .features-section { padding: 0 24px; }
+      .features-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .features-grid { grid-template-columns: 1fr; gap: 24px; }
+
+      .quote-wrap, .cta-section { padding: 80px 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Velocity</a>
+  <ul class="nav-links">
+    <li><a href="#">Race</a></li>
+    <li><a href="#">Team</a></li>
+    <li><a href="#">Performance</a></li>
+    <li><a href="#cta" class="nav-cta">Get Early Access</a></li>
+  </ul>
+</nav>
+
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-video-outer">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="./video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="hero-copy">
+    <p class="hero-eyebrow">2026 Season Launch</p>
+    <h1 class="hero-headline">Engineered<br>for the Apex</h1>
+    <p class="hero-sub">Where precision meets performance.</p>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── STATS BAR ────────────────────────────────────────── -->
+<section class="stats-bar" id="stats">
+  <div class="stat-item">
+    <span class="stat-num">
+      <span class="count" data-target="0.001" data-dec="3">0.000</span><span class="unit">s</span>
+    </span>
+    <span class="stat-label">Reaction Time</span>
+  </div>
+  <div class="stat-item" style="transition-delay:.1s">
+    <span class="stat-num">
+      <span class="count" data-target="340" data-dec="0">0</span><span class="unit"> km/h</span>
+    </span>
+    <span class="stat-label">Top Speed</span>
+  </div>
+  <div class="stat-item" style="transition-delay:.2s">
+    <span class="stat-num">
+      <span class="count" data-target="850" data-dec="0">0</span><span class="unit">kg</span>
+    </span>
+    <span class="stat-label">Peak Downforce</span>
+  </div>
+  <div class="stat-item" style="transition-delay:.3s">
+    <span class="stat-num">
+      <span class="count" data-target="4" data-dec="0">0</span>
+    </span>
+    <span class="stat-label">Championship Titles</span>
+  </div>
+</section>
+
+
+<!-- ── FEATURES ─────────────────────────────────────────── -->
+<div class="features-section">
+  <div class="features-header reveal">
+    <div>
+      <p class="features-kicker">Engineering Excellence</p>
+      <h2 class="features-title">Built to<br>Dominate</h2>
+    </div>
+    <p class="features-desc">
+      Three pillars define every car that carries our name onto the grid. Designed from first principles. Obsessed over in every dimension.
+    </p>
+  </div>
+
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <span class="feature-num">01</span>
+      <svg class="feature-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="18" cy="18" rx="14" ry="7"/>
+        <path d="M18 4 L18 32"/>
+        <path d="M4 18 L32 18"/>
+        <path d="M7 10.5 Q18 15 29 10.5"/>
+        <path d="M7 25.5 Q18 21 29 25.5"/>
+      </svg>
+      <h3 class="feature-name">Aerodynamic Precision</h3>
+      <p class="feature-text">847 hours of wind tunnel analysis. Every surface shaped by computational fluid dynamics to generate maximum downforce with minimum drag.</p>
+    </div>
+
+    <div class="feature-card" style="transition-delay:.18s">
+      <span class="feature-num">02</span>
+      <svg class="feature-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4 L22 14 L32 14 L24 21 L27 32 L18 25 L9 32 L12 21 L4 14 L14 14 Z"/>
+      </svg>
+      <h3 class="feature-name">Raw Power</h3>
+      <p class="feature-text">1.6-litre V6 hybrid delivering over 1,000 horsepower. Energy recovery systems harvesting every joule from braking and exhaust heat.</p>
+    </div>
+
+    <div class="feature-card" style="transition-delay:.34s">
+      <span class="feature-num">03</span>
+      <svg class="feature-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="5" width="26" height="20" rx="3"/>
+        <path d="M12 31 L24 31"/>
+        <path d="M18 25 L18 31"/>
+        <path d="M10 13 L14 17 L22 11"/>
+        <circle cx="28" cy="10" r="2.5" stroke-width="1.2"/>
+      </svg>
+      <h3 class="feature-name">Driver Intelligence</h3>
+      <p class="feature-text">Over 300 real-time telemetry channels. AI-assisted race strategy systems that process variables faster than human cognition ever could.</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── QUOTE ─────────────────────────────────────────────── -->
+<div class="quote-wrap">
+  <div class="quote-inner" id="quote-target">
+    <p class="quote-tag">The Philosophy</p>
+    <h2 class="quote-text">Every<br>Millisecond<br>Matters</h2>
+    <div class="quote-rule"></div>
+    <p class="quote-body">
+      The margin between first and second is invisible to the naked eye. We live in that margin — engineering for the fractions no one else sees, the details no one else obsesses over.
+    </p>
+  </div>
+</div>
+
+
+<!-- ── CINEMATIC BANNER ──────────────────────────────────── -->
+<div class="banner">
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="./video.mp4" type="video/mp4">
+  </video>
+</div>
+
+
+<!-- ── CTA ──────────────────────────────────────────────── -->
+<section class="cta-section" id="cta">
+  <h2 class="cta-headline">Join<br>the Grid</h2>
+  <p class="cta-sub">Be the first to know when the 2026 car launches.</p>
+  <div class="cta-form">
+    <input
+      class="cta-input"
+      type="email"
+      placeholder="Your email address"
+      aria-label="Email address"
+    >
+    <button class="cta-btn">Reserve Your Spot</button>
+  </div>
+  <p class="cta-note">No spam. Unsubscribe any time.</p>
+</section>
+
+
+<!-- ── FOOTER ────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">Velocity</span>
+    <span class="footer-copy">© 2026 All rights reserved</span>
+  </div>
+  <div class="footer-socials">
+    <!-- Instagram -->
+    <a href="#" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+        <circle cx="12" cy="12" r="4.5"/>
+        <circle cx="17.8" cy="6.2" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+    <!-- X -->
+    <a href="#" aria-label="X / Twitter">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 2.25h6.988l4.258 5.63 4.748-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+      </svg>
+    </a>
+    <!-- YouTube -->
+    <a href="#" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+        <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+    <!-- LinkedIn -->
+    <a href="#" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="4"/>
+        <path d="M7 10 L7 17"/>
+        <path d="M7 7 L7 7.5"/>
+        <path d="M11 17 L11 13.5 C11 11.5 17 11.5 17 13.5 L17 17"/>
+        <path d="M11 10 L11 17"/>
+      </svg>
+    </a>
+  </div>
+</footer>
+
+
+<script>
+  /* ── Nav: hide on scroll-down, show on scroll-up ──── */
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y > 90) {
+          nav.classList.toggle('nav-hidden', y > lastY + 2);
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+        lastY = y;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+
+  /* ── Intersection Observer: reveal on scroll ──────── */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(
+    '.stat-item, .feature-card, .quote-inner, .cta-section, .reveal'
+  ).forEach(el => revealObs.observe(el));
+
+
+  /* ── Count-up animation ───────────────────────────── */
+  function runCount(el) {
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
+    const target   = parseFloat(el.dataset.target);
+    const decimals = parseInt(el.dataset.dec) || 0;
+    const dur      = 1600;
+    const start    = performance.now();
+
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3); // cubic ease-out
+      el.textContent = (target * ease).toFixed(decimals);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toFixed(decimals);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statsObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.count').forEach(runCount);
+        statsObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  statsObs.observe(document.getElementById('stats'));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIC AIR PRO — Built for What's Next</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --color-bg:        #F7F3EC;
+      --color-primary:   #0A0A0A;
+      --color-accent:    #0066FF;
+      --color-accent-dk: #0052CC;
+      --color-surface:   #EDE8DF;
+      --color-dark:      #0A0A0A;
+      --color-mid:       #666666;
+      --color-border:    #DDD7CC;
+
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  32px;
+      --space-lg:  64px;
+      --space-xl:  96px;
+      --space-2xl: 140px;
+
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  24px;
+      --radius-xl:  32px;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in:  cubic-bezier(0.4, 0, 1, 1);
+
+      --nav-h: 72px;
+      --max-w: 1200px;
+    }
+
+    /* ============================================================
+       RESET + BASE
+    ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-primary);
+      overflow-x: hidden;
+    }
+
+    img, video { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: var(--nav-h);
+      background: rgba(247, 243, 236, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: opacity 450ms var(--ease-out), transform 450ms var(--ease-out);
+      pointer-events: none;
+    }
+
+    .navbar.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .nav__logo {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      color: var(--color-primary);
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav__links a {
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: var(--color-primary);
+      transition: color 150ms ease;
+    }
+
+    .nav__links a:hover { color: var(--color-accent); }
+
+    .nav__cta {
+      background: var(--color-primary) !important;
+      color: #fff !important;
+      padding: 9px 22px;
+      border-radius: 100px;
+      transition: background 250ms ease, transform 150ms ease !important;
+    }
+
+    .nav__cta:hover {
+      background: var(--color-accent) !important;
+      transform: scale(1.03);
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 640px;
+      background: #F7F3EC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Video layer */
+    .hero__video-wrap {
+      position: absolute;
+      inset: 0;
+      background: #F7F3EC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Top white fade — softens hard top edge */
+    .hero__video-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 18%;
+      background: linear-gradient(to bottom,
+        rgba(247,243,236,1)   0%,
+        rgba(247,243,236,0.4) 60%,
+        rgba(247,243,236,0)   100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero__video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      border: none;
+      outline: none;
+    }
+
+    /* Dark scrim for text legibility over video */
+    .hero__scrim {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 70% 60% at 50% 45%,
+        rgba(0,0,0,0.28) 0%,
+        rgba(0,0,0,0.0) 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Bottom gradient: video dissolves into white page */
+    .hero__fade {
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 42%;
+      background: linear-gradient(to bottom,
+        rgba(247,243,236,0.00)  0%,
+        rgba(247,243,236,0.45) 40%,
+        rgba(247,243,236,0.90) 70%,
+        rgba(247,243,236,1.00) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Hero text — layout éditorial, ancré en bas à gauche */
+    .hero__content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      padding: 0 clamp(28px, 5vw, 72px) clamp(48px, 7vh, 96px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .hero__eyebrow {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: wordUp 600ms var(--ease-out) 150ms forwards;
+    }
+
+    .hero__title {
+      font-size: clamp(64px, 11vw, 148px);
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: #FFFFFF;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .hero__title span {
+      display: block;
+      opacity: 0;
+    }
+
+    .hero__title .t1 { animation: wordUp 900ms var(--ease-out) 300ms forwards; }
+    .hero__title .t2 {
+      font-size: clamp(20px, 3.2vw, 44px);
+      font-weight: 300;
+      letter-spacing: 0.32em;
+      color: rgba(255,255,255,0.45);
+      margin-top: 10px;
+      animation: wordUp 900ms var(--ease-out) 480ms forwards;
+    }
+
+    /* Rangée du bas : tagline gauche — boutons droite */
+    .hero__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: var(--space-md);
+      opacity: 0;
+      animation: wordUp 700ms var(--ease-out) 680ms forwards;
+    }
+
+    .hero__tagline {
+      font-size: clamp(13px, 1.4vw, 16px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.03em;
+      line-height: 1.5;
+      margin: 0;
+      max-width: 260px;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .hero__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .hero__tagline { max-width: 100%; }
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 14.5px;
+      letter-spacing: 0.025em;
+      padding: 14px 32px;
+      border-radius: 100px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition:
+        background 250ms ease,
+        color 250ms ease,
+        border-color 250ms ease,
+        transform 150ms ease,
+        box-shadow 250ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover  { transform: scale(1.04); }
+    .btn:active { transform: scale(0.97); }
+
+    .btn--primary {
+      background: var(--color-accent);
+      color: #FFFFFF;
+      box-shadow: 0 4px 24px rgba(0, 102, 255, 0.28);
+    }
+
+    .btn--primary:hover {
+      background: var(--color-accent-dk);
+      box-shadow: 0 8px 36px rgba(0, 102, 255, 0.42);
+    }
+
+    .btn--ghost {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--color-primary);
+      border-color: rgba(10, 10, 10, 0.3);
+    }
+
+    .btn--outline:hover {
+      background: var(--color-primary);
+      color: #FFFFFF;
+      border-color: var(--color-primary);
+    }
+
+    .btn--lg {
+      font-size: 16px;
+      padding: 17px 44px;
+    }
+
+    /* ============================================================
+       SCROLL REVEAL SYSTEM
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(44px);
+      transition:
+        opacity 750ms var(--ease-out),
+        transform 750ms var(--ease-out);
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .d1 { transition-delay:   0ms; }
+    .d2 { transition-delay: 110ms; }
+    .d3 { transition-delay: 220ms; }
+    .d4 { transition-delay: 330ms; }
+
+    /* ============================================================
+       SHARED SECTION TYPOGRAPHY
+    ============================================================ */
+    .section-wrap { padding: var(--space-2xl) 0; }
+
+    .section-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 10px;
+    }
+
+    .section-label--dim { color: rgba(255,255,255,0.38); }
+
+    .section-title {
+      font-size: clamp(30px, 4.5vw, 50px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--color-primary);
+    }
+
+    .section-title--light { color: #FFFFFF; }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .section-sub {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--color-mid);
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       INTRO STRIP (between hero and features)
+    ============================================================ */
+    .intro {
+      padding: var(--space-lg) 0 var(--space-2xl);
+      text-align: center;
+    }
+
+    .intro__text {
+      font-size: clamp(18px, 2.8vw, 28px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: #555;
+      max-width: 700px;
+      margin: 0 auto;
+      letter-spacing: -0.01em;
+    }
+
+    .intro__text strong {
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    /* ============================================================
+       FEATURES
+    ============================================================ */
+    .features { background: var(--color-bg); }
+
+    .features__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feat-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      padding: 48px 36px 44px;
+      border: 1px solid var(--color-border);
+      transition:
+        transform 600ms var(--ease-out),
+        border-color 250ms ease,
+        box-shadow 300ms ease;
+      cursor: default;
+    }
+
+    .feat-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--color-accent);
+      box-shadow: 0 20px 48px rgba(0, 102, 255, 0.1);
+    }
+
+    .feat-card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 28px;
+      color: var(--color-accent);
+    }
+
+    .feat-card__name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 12px;
+    }
+
+    .feat-card__desc {
+      font-size: 14.5px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-mid);
+    }
+
+    /* ============================================================
+       PERFORMANCE / STATS
+    ============================================================ */
+    .performance {
+      background: var(--color-dark);
+      padding: var(--space-2xl) 0;
+    }
+
+    .perf__sub {
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.38);
+      margin-top: 14px;
+    }
+
+    .perf__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: var(--space-xl);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .stat {
+      padding: 48px 36px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      transition: background 250ms ease;
+    }
+
+    .stat:last-child { border-right: none; }
+    .stat:hover { background: rgba(255,255,255,0.03); }
+
+    .stat__num {
+      display: block;
+      font-size: clamp(44px, 5.5vw, 70px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #FFFFFF 20%, var(--color-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat__label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       TECHNOLOGY ROWS
+    ============================================================ */
+    .technology { background: var(--color-bg); }
+
+    .tech-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tech-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+      padding: var(--space-xl) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .tech-row:last-child { border-bottom: none; }
+
+    .tech-row--flip { direction: rtl; }
+    .tech-row--flip > * { direction: ltr; }
+
+    .tech-row__icon {
+      width: 36px;
+      height: 36px;
+      color: var(--color-accent);
+      margin-bottom: 20px;
+    }
+
+    .tech-row__num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+    }
+
+    .tech-row__title {
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .tech-row__desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--color-mid);
+    }
+
+    .tech-row__visual {
+      border-radius: var(--radius-xl);
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .tech-row__visual-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tech-row__visual--blue {
+      background: linear-gradient(135deg, #003d99 0%, #0066FF 55%, #4d94ff 100%);
+      color: rgba(255,255,255,0.4);
+    }
+
+    .tech-row__visual--dark {
+      background: linear-gradient(135deg, #050508 0%, #0d0d1a 60%, #1a1a3e 100%);
+      color: rgba(255,255,255,0.22);
+    }
+
+    .tech-row__visual--soft {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e0eaff 100%);
+      border: 1px solid var(--color-border);
+      color: rgba(0,102,255,0.3);
+    }
+
+    /* Animated mesh overlay for tech visuals */
+    .tech-row__visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .tech-row__visual--soft::after {
+      background-image:
+        linear-gradient(rgba(0,102,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,102,255,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* ============================================================
+       CTA SECTION
+    ============================================================ */
+    .cta-section {
+      padding: var(--space-2xl) 0;
+      text-align: center;
+    }
+
+    .cta__tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 20px;
+    }
+
+    .cta__headline {
+      font-size: clamp(48px, 8vw, 104px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+    }
+
+    .cta__sub {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-mid);
+      margin-bottom: var(--space-lg);
+      letter-spacing: 0.01em;
+    }
+
+    .cta__btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer {
+      background: var(--color-primary);
+      padding: 28px 0;
+    }
+
+    .footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer__logo {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      color: #FFFFFF;
+    }
+
+    .footer__nav {
+      display: flex;
+      gap: 36px;
+    }
+
+    .footer__nav a {
+      font-size: 12.5px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.38);
+      transition: color 150ms ease;
+    }
+
+    .footer__nav a:hover { color: rgba(255,255,255,0.85); }
+
+    .footer__copy {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.22);
+    }
+
+    /* ============================================================
+       KEYFRAMES
+    ============================================================ */
+    @keyframes wordUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+        filter: blur(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.06); }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .features__grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        max-width: 540px;
+        margin: 0 auto;
+      }
+
+      .perf__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.07); }
+
+      .tech-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+
+      .tech-row--flip { direction: ltr; }
+
+      .tech-row__visual { height: 260px; }
+
+      .nav__links { display: none; }
+    }
+
+    @media (max-width: 540px) {
+      :root { --space-2xl: 96px; }
+
+      .perf__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .stat:last-child { border-bottom: none; }
+
+      .hero__actions,
+      .cta__btns { flex-direction: column; align-items: center; }
+
+      .footer__inner { flex-direction: column; text-align: center; }
+      .footer__nav { flex-wrap: wrap; justify-content: center; gap: 20px; }
+
+      .feat-card { padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================
+       NAVBAR
+  ================================================================ -->
+  <nav class="navbar" id="nav" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">KINETIC</a>
+      <ul class="nav__links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#performance">Performance</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#cta" class="nav__cta">Shop Now</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ================================================================
+       HERO
+  ================================================================ -->
+  <section class="hero" id="hero" aria-label="Hero">
+
+    <div class="hero__video-wrap">
+      <video
+        class="hero__video"
+        src="./video.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true">
+      </video>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="hero__fade" aria-hidden="true"></div>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow">Introducing</p>
+      <h1 class="hero__title">
+        <span class="t1">KINETIC</span>
+      </h1>
+      <div class="hero__bottom">
+        <p class="hero__tagline">Built for What's Next.</p>
+        <div class="hero__actions">
+          <a href="#cta" class="btn btn--primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================================================================
+       INTRO STRIP
+  ================================================================ -->
+  <div class="intro">
+    <div class="container">
+      <p class="intro__text reveal d1">
+        We didn't make a better shoe. We <strong>rethought the physics</strong> of how a shoe should move. Three years of biomechanical research, distilled into 168 grams of pure intent.
+      </p>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       FEATURES
+  ================================================================ -->
+  <section class="features section-wrap" id="features" aria-label="Features">
+    <div class="container">
+
+      <div class="section-head">
+        <span class="section-label reveal d1">Why KINETIC</span>
+        <h2 class="section-title reveal d2">Engineered at every millimeter.</h2>
+        <p class="section-sub reveal d3" style="max-width:500px;margin:14px auto 0">Every material chosen for a reason. Every gram defended with data.</p>
+      </div>
+
+      <div class="features__grid">
+
+        <article class="feat-card reveal d1">
+          <svg class="feat-card__icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M24 6C24 6 34 12 34 24C34 34 24 42 24 42C24 42 14 34 14 24C14 12 24 6 24 6Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M24 16V28M18 22H30" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <h3 class="feat-card__name">Ultralight Build</h3>
+          <p class="feat-card__desc">At just 168g, the AIR PRO disappears on your foot. A carbon-lattice midsole absorbs impact without adding mass — you feel the ground, not the shoe.</p>
+        </article>
+
+        <article class="feat-card reveal d2">
+          <svg class="feat-card__icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2.2"/>
+            <circle cx="24" cy="24" r="4" fill="currentColor"/>
+            <line x1="24" y1="4" x2="24" y2="9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="24" y1="39" x2="24" y2="44" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="4" y1="24" x2="9" y2="24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="39" y1="24" x2="44" y2="24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <h3 class="feat-card__name">Precision Fit System</h3>
+          <p class="feat-card__desc">Adaptive tensioning cables wrap your midfoot with 2mm tolerance mapping across 14 anatomical zones. One shoe. Zero pressure points. Zero slippage.</p>
+        </article>
+
+        <article class="feat-card reveal d3">
+          <svg class="feat-card__icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M28 5L12 26H24L20 43L36 22H24L28 5Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+          <h3 class="feat-card__name">Explosive Energy Return</h3>
+          <p class="feat-card__desc">Propulsion foam captures 91% of impact energy and releases it forward. A tri-density matrix tuned to human gait — heel cushion, arch support, forefoot snap.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       PERFORMANCE STATS
+  ================================================================ -->
+  <section class="performance" id="performance" aria-label="Performance stats">
+    <div class="container">
+
+      <div class="section-head reveal d1">
+        <span class="section-label section-label--dim">By the Numbers</span>
+        <h2 class="section-title section-title--light">Numbers don't lie.</h2>
+        <p class="perf__sub">Three years of biomechanical research. One shoe.</p>
+      </div>
+
+      <div class="perf__grid">
+        <div class="stat reveal d1">
+          <span class="stat__num" data-target="47" data-suffix="%">0%</span>
+          <span class="stat__label">Lighter Than<br>Previous Gen</span>
+        </div>
+        <div class="stat reveal d2">
+          <span class="stat__num" data-target="2" data-suffix="mm">0mm</span>
+          <span class="stat__label">Fit Precision<br>Tolerance</span>
+        </div>
+        <div class="stat reveal d3">
+          <span class="stat__num" data-target="91" data-suffix="%">0%</span>
+          <span class="stat__label">Energy Return<br>Rate</span>
+        </div>
+        <div class="stat reveal d4">
+          <span class="stat__num" data-target="10" data-suffix="K+">0K+</span>
+          <span class="stat__label">Athletes<br>Worldwide</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================
+       TECHNOLOGY
+  ================================================================ -->
+  <section class="technology section-wrap" id="technology" aria-label="Technology">
+    <div class="container">
+
+      <div class="section-head">
+        <span class="section-label reveal d1">Under the Hood</span>
+        <h2 class="section-title reveal d2">Three breakthroughs.<br>One shoe.</h2>
+      </div>
+
+      <div class="tech-rows">
+
+        <!-- Row 1 -->
+        <div class="tech-row reveal">
+          <div class="tech-row__text">
+            <svg class="tech-row__icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="3" y="3"   width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+              <rect x="21" y="3"  width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+              <rect x="3" y="21"  width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+              <rect x="21" y="21" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <p class="tech-row__num">01 — Carbon Lattice Core</p>
+            <h3 class="tech-row__title">Structure without sacrifice.</h3>
+            <p class="tech-row__desc">Our patent-pending lattice geometry distributes compression loads across 360° — eliminating the dead zones that rob you of power. The midsole gives exactly where it must and holds firm everywhere else.</p>
+          </div>
+          <div class="tech-row__visual tech-row__visual--blue">
+            <span class="tech-row__visual-label">Carbon Lattice</span>
+          </div>
+        </div>
+
+        <!-- Row 2 (flipped) -->
+        <div class="tech-row tech-row--flip reveal">
+          <div class="tech-row__text">
+            <svg class="tech-row__icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 18 C6 10 10 26 14 18 C18 10 22 26 26 18 C30 10 33 26 36 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+            <p class="tech-row__num">02 — Adaptive Tensioning</p>
+            <h3 class="tech-row__title">A fit that thinks.</h3>
+            <p class="tech-row__desc">Reactive fiber cables respond to foot expansion during activity — tightening where you push, releasing where you flex. Zero pressure points across all 14 anatomical zones mapped across the foot.</p>
+          </div>
+          <div class="tech-row__visual tech-row__visual--dark">
+            <span class="tech-row__visual-label">Adaptive Fit</span>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="tech-row reveal">
+          <div class="tech-row__text">
+            <svg class="tech-row__icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M20 3L8 20H17L14 33L28 16H19L20 3Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+            <p class="tech-row__num">03 — Propulsion Foam</p>
+            <h3 class="tech-row__title">Return everything. Waste nothing.</h3>
+            <p class="tech-row__desc">A tri-density foam matrix tuned to human gait cycles — heel cushion, arch stability, forefoot snap. 91% energy return rate means every ounce of effort drives you forward, not into the ground.</p>
+          </div>
+          <div class="tech-row__visual tech-row__visual--soft">
+            <span class="tech-row__visual-label">Propulsion Foam</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       CTA
+  ================================================================ -->
+  <section class="cta-section" id="cta" aria-label="Call to action">
+    <div class="container">
+      <div class="reveal d1">
+        <span class="cta__tag">Ready?</span>
+        <h2 class="cta__headline">Make Your<br>Move.</h2>
+        <p class="cta__sub">Limited first run. Ships worldwide. Free returns on every order.</p>
+        <div class="cta__btns">
+          <a href="#" class="btn btn--primary btn--lg">Order Now &mdash; $219</a>
+          <a href="#" class="btn btn--outline btn--lg">View Lookbook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       FOOTER
+  ================================================================ -->
+  <footer class="footer" aria-label="Footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__logo">KINETIC</span>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+          <a href="#">Careers</a>
+        </nav>
+        <span class="footer__copy">&copy; 2026 Kinetic Athletics. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================================================================
+       JAVASCRIPT
+  ================================================================ -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ──────────────────────────────────────────────────────────────
+       NAVBAR — appears after scrolling 80% of hero height
+    ────────────────────────────────────────────────────────────── */
+    var nav  = document.getElementById('nav');
+    var hero = document.getElementById('hero');
+
+    function syncNav() {
+      var threshold = hero.offsetHeight * 0.8;
+      if (window.scrollY > threshold) {
+        nav.classList.add('visible');
+      } else {
+        nav.classList.remove('visible');
+      }
+    }
+
+    var navTick = false;
+    window.addEventListener('scroll', function () {
+      if (!navTick) {
+        requestAnimationFrame(function () { syncNav(); navTick = false; });
+        navTick = true;
+      }
+    }, { passive: true });
+
+    /* ──────────────────────────────────────────────────────────────
+       SCROLL REVEAL — IntersectionObserver
+    ────────────────────────────────────────────────────────────── */
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -55px 0px', threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      revealObs.observe(el);
+    });
+
+    /* ──────────────────────────────────────────────────────────────
+       ANIMATED COUNTERS — easeOutExpo, triggered once
+    ────────────────────────────────────────────────────────────── */
+    function easeOutExpo(t) {
+      return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
+    function runCounter(el) {
+      var target   = parseInt(el.dataset.target, 10);
+      var suffix   = el.dataset.suffix || '';
+      var duration = 1900;
+      var start    = performance.now();
+
+      (function tick(now) {
+        var progress = Math.min((now - start) / duration, 1);
+        var value    = Math.round(easeOutExpo(progress) * target);
+        el.textContent = value + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = target + suffix;
+          el.style.animation = 'pulse 380ms ease';
+          setTimeout(function () { el.style.animation = ''; }, 380);
+        }
+      })(start);
+    }
+
+    var counterObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.stat__num[data-target]').forEach(runCounter);
+          counterObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.25 });
+
+    var perfSection = document.getElementById('performance');
+    if (perfSection) counterObs.observe(perfSection);
+
+    /* ──────────────────────────────────────────────────────────────
+       SMOOTH SCROLL for hash links
+    ────────────────────────────────────────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    /* ──────────────────────────────────────────────────────────────
+       VIDEO — autoplay + fallback
+    ────────────────────────────────────────────────────────────── */
+    var vid = document.querySelector('.hero__video');
+    if (vid) {
+      vid.addEventListener('error', function () {
+        vid.style.display = 'none';
+      });
+      vid.play().catch(function () {
+        // Autoplay blocked — video stays on first frame, page still works fine
+      });
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
