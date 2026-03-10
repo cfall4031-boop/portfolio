@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA — The Ritual 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --bg:          #F8F5F1;
+      --bg-warm:     #EDE8E1;
+      --text:        #141210;
+      --text-mid:    #6B6560;
+      --text-light:  #A09890;
+      --gold:        #B8956A;
+      --gold-light:  #D4B896;
+      --border:      rgba(20,18,16,0.09);
+      --nav-h:       68px;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; }
+
+    /* ── Utilities ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+    .reveal-d5 { transition-delay: 0.5s; }
+
+    /* ── Navbar ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease, transform 0.4s ease;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled {
+      background: rgba(248, 245, 241, 0.88);
+      border-color: var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav.hidden {
+      transform: translateY(-100%);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: 0.35em;
+      color: var(--text);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 9px 22px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      border-radius: 999px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .nav-cta:hover {
+      background: var(--gold);
+      color: #fff;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 680px;
+      overflow: hidden;
+      background: var(--bg);
+      display: flex;
+      align-items: flex-end;
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+    }
+    /* Lateral vignette */
+    .hero-vignette-sides {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 85% 100% at 50% 50%,
+        transparent 40%,
+        rgba(248,245,241,0.55) 70%,
+        rgba(248,245,241,0.92) 88%,
+        rgba(248,245,241,1) 100%
+      );
+    }
+    /* Bottom fade */
+    .hero-fade-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 2;
+      height: 55%;
+      pointer-events: none;
+      background: linear-gradient(to bottom,
+        rgba(248,245,241,0) 0%,
+        rgba(248,245,241,0.18) 25%,
+        rgba(248,245,241,0.62) 55%,
+        rgba(248,245,241,0.92) 80%,
+        rgba(248,245,241,1) 100%
+      );
+    }
+    /* Top fade */
+    .hero-fade-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 2;
+      height: 12%;
+      pointer-events: none;
+      background: linear-gradient(to top,
+        rgba(248,245,241,0) 0%,
+        rgba(248,245,241,0.8) 100%
+      );
+    }
+    /* Editorial scrim */
+    .hero-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(ellipse 60% 60% at 30% 50%,
+        rgba(20,18,16,0.06) 0%,
+        transparent 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 0 64px calc(10vh + 56px);
+      max-width: 720px;
+    }
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(28px);
+      filter: blur(4px);
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(80px, 12vw, 160px);
+      line-height: 0.88;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      opacity: 0;
+      transform: translateY(28px);
+      filter: blur(4px);
+      animation: fadeUp 0.9s ease forwards 0.45s;
+    }
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      color: var(--text-mid);
+      margin-top: 24px;
+      letter-spacing: 0.04em;
+      opacity: 0;
+      transform: translateY(28px);
+      filter: blur(4px);
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+    .hero-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 40px;
+      opacity: 0;
+      transform: translateY(28px);
+      filter: blur(4px);
+      animation: fadeUp 0.8s ease forwards 0.9s;
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-ghost {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      padding: 11px 28px;
+      border: 1px solid rgba(20,18,16,0.22);
+      color: var(--text);
+      border-radius: 2px;
+      transition: border-color 0.3s, color 0.3s, transform 0.25s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: scale(1.03);
+    }
+    .btn-filled {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 11px 28px;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 2px;
+      border: 1px solid var(--text);
+      transition: background 0.3s, border-color 0.3s, transform 0.25s;
+    }
+    .btn-filled:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: scale(1.03);
+    }
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 1.3s;
+    }
+    .hero-scroll span {
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 48px;
+      background: var(--gold);
+      animation: pulse-line 2s ease-in-out infinite;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.15); }
+    }
+    @keyframes lineGrow {
+      from { width: 0; }
+      to { width: 64px; }
+    }
+
+    /* ── Statement Strip ── */
+    .statement {
+      background: var(--bg);
+      padding: 130px 48px;
+      text-align: center;
+    }
+    .statement-rule {
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 44px;
+      transition: width 0.9s ease;
+    }
+    .statement-rule.in { width: 64px; }
+    .statement-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(36px, 5.5vw, 72px);
+      line-height: 1.18;
+      color: var(--text);
+      max-width: 900px;
+      margin: 0 auto;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Formula Section ── */
+    .formula {
+      background: var(--bg);
+      padding: 120px 48px;
+    }
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 56px;
+    }
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .formula-card {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .formula-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--gold);
+      transition: width 0.9s ease;
+    }
+    .formula-card.in::before { width: 100%; }
+    .formula-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+    }
+    .formula-stat {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 52px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .formula-stat span { color: var(--gold); }
+    .formula-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 20px;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+    .formula-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+
+    /* ── Cinematic Banner ── */
+    .cinematic {
+      position: relative;
+      height: 62vh;
+      min-height: 360px;
+      overflow: hidden;
+    }
+    .cinematic video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .cinematic-fade-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 28%;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(248,245,241,1) 0%, rgba(248,245,241,0) 100%);
+    }
+    .cinematic-fade-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 28%;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(248,245,241,1) 0%, rgba(248,245,241,0) 100%);
+    }
+    .cinematic-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: rgba(20,18,16,0.22);
+    }
+    .cinematic-text {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cinematic-text p {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(28px, 4vw, 54px);
+      color: #fff;
+      letter-spacing: 0.04em;
+      text-align: center;
+      max-width: 700px;
+      padding: 0 32px;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.18);
+    }
+
+    /* ── Ritual Steps ── */
+    .ritual {
+      background: var(--bg);
+      padding: 120px 48px;
+    }
+    .ritual-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 48px;
+    }
+    .ritual-row:first-of-type { border-top: 1px solid var(--border); }
+    .ritual-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex: 1;
+    }
+    .ritual-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(80px, 8vw, 120px);
+      color: var(--text);
+      opacity: 0.07;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .ritual-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(28px, 3.5vw, 44px);
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+    .ritual-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 28px;
+    }
+    .ritual-desc {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-mid);
+      max-width: 340px;
+      text-align: right;
+    }
+    .ritual-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ritual-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    /* ── Philosophy ── */
+    .philosophy {
+      background: var(--bg-warm);
+      padding: 130px 48px;
+      text-align: center;
+    }
+    .philosophy-rule {
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 44px;
+      transition: width 0.9s ease;
+    }
+    .philosophy-rule.in { width: 64px; }
+    .philosophy-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(32px, 4.5vw, 60px);
+      line-height: 1.2;
+      color: var(--text);
+      max-width: 780px;
+      margin: 0 auto 32px;
+      letter-spacing: -0.01em;
+    }
+    .philosophy-sig {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    /* ── CTA / Waitlist ── */
+    .cta-section {
+      background: var(--bg);
+      padding: 140px 48px;
+      text-align: center;
+    }
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(48px, 8vw, 112px);
+      line-height: 0.92;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 52px;
+    }
+    .cta-form {
+      display: flex;
+      align-items: stretch;
+      max-width: 480px;
+      margin: 0 auto 24px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .cta-form:focus-within { border-color: var(--gold); }
+    .cta-form input {
+      flex: 1;
+      padding: 15px 20px;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+    }
+    .cta-form input::placeholder { color: var(--text-light); }
+    .cta-form button {
+      padding: 15px 28px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.3s;
+    }
+    .cta-form button:hover { background: var(--gold); }
+    .cta-note {
+      font-size: 12px;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+    }
+    .cta-note span {
+      margin: 0 10px;
+      opacity: 0.4;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--text);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 16px;
+      letter-spacing: 0.35em;
+      color: rgba(248,245,241,0.6);
+    }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(248,245,241,0.45);
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .footer-links a:hover { color: rgba(248,245,241,0.85); }
+    .footer-icons {
+      display: flex;
+      gap: 18px;
+    }
+    .footer-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(248,245,241,0.15);
+      border-radius: 50%;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .footer-icons a:hover {
+      border-color: var(--gold);
+      background: rgba(184,149,106,0.12);
+    }
+    .footer-icons svg {
+      width: 14px;
+      height: 14px;
+      stroke: rgba(248,245,241,0.5);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(248,245,241,0.3);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero-content { padding: 0 24px calc(10vh + 56px); }
+      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .ritual-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .ritual-right { justify-content: flex-start; }
+      .ritual-desc { text-align: left; }
+      footer { flex-direction: column; gap: 20px; text-align: center; }
+      .footer-links, .footer-icons { justify-content: center; }
+      .statement, .formula, .ritual, .philosophy, .cta-section { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="nav" id="nav">
+    <div class="nav-logo">AURA</div>
+    <ul class="nav-links">
+      <li><a href="#ritual">Ritual</a></li>
+      <li><a href="#formula">Ingredients</a></li>
+      <li><a href="#philosophy">Story</a></li>
+    </ul>
+    <a href="#waitlist" class="nav-cta">Shop — €89</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="hero">
+    <video
+      class="hero-video"
+      src="./video.mp4"
+      autoplay muted loop playsinline
+      preload="auto"
+    ></video>
+    <div class="hero-vignette-sides"></div>
+    <div class="hero-fade-top"></div>
+    <div class="hero-scrim"></div>
+    <div class="hero-fade-bottom"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">NEW · RITUAL 2026</p>
+      <h1 class="hero-title">THE<br>RITUAL</h1>
+      <p class="hero-subtitle">A new dimension of skin luminosity.</p>
+      <div class="hero-bottom">
+        <p class="hero-tagline">Crafted for those who know.</p>
+        <div class="hero-btns">
+          <a href="#formula" class="btn-ghost">Discover →</a>
+          <a href="#waitlist" class="btn-filled">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── STATEMENT STRIP ── -->
+  <section class="statement">
+    <div class="statement-rule reveal" id="rule-statement"></div>
+    <blockquote class="statement-quote reveal reveal-d2">
+      "Radiance is not applied.<br>It is revealed."
+    </blockquote>
+  </section>
+
+  <!-- ── FORMULA / INGREDIENTS ── -->
+  <section class="formula" id="formula">
+    <p class="section-label reveal">The Formula</p>
+    <div class="formula-grid">
+
+      <div class="formula-card reveal reveal-d1">
+        <p class="formula-stat"><span class="formula-counter" data-target="97" data-suffix="%">0%</span></p>
+        <p class="formula-name">Hyaluronic Complex</p>
+        <p class="formula-desc">Deep-binding molecular chains that deliver 72-hour hydration, restoring the skin's natural plumpness and luminous resilience.</p>
+      </div>
+
+      <div class="formula-card reveal reveal-d2">
+        <p class="formula-stat"><span class="formula-counter" data-target="3" data-suffix="M+">0M+</span></p>
+        <p class="formula-name">Lumière Peptides</p>
+        <p class="formula-desc">Over three million precision peptide bonds engineered to stimulate collagen and restore the golden ratio of youthful elasticity.</p>
+      </div>
+
+      <div class="formula-card reveal reveal-d3">
+        <p class="formula-stat"><span class="formula-counter" data-target="24" data-suffix="h">0h</span></p>
+        <p class="formula-name">Solar Barrier Complex</p>
+        <p class="formula-desc">A 24-hour photoprotective matrix that shields against oxidative stress while amplifying the skin's natural glow response.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CINEMATIC BANNER ── -->
+  <section class="cinematic">
+    <video
+      src="./video.mp4"
+      autoplay muted loop playsinline
+      preload="auto"
+      style="object-position: center 60%"
+    ></video>
+    <div class="cinematic-scrim"></div>
+    <div class="cinematic-fade-top"></div>
+    <div class="cinematic-fade-bottom"></div>
+    <div class="cinematic-text">
+      <p>Where science becomes luminosity.</p>
+    </div>
+  </section>
+
+  <!-- ── RITUAL STEPS ── -->
+  <section class="ritual" id="ritual">
+    <p class="section-label reveal">The Ritual</p>
+
+    <div class="ritual-row reveal">
+      <div class="ritual-left">
+        <span class="ritual-num">01</span>
+        <span class="ritual-name">Cleanse</span>
+      </div>
+      <div class="ritual-right">
+        <p class="ritual-desc">Begin with our micellar essence. Gently dissolve impurities while preserving the skin's protective microbiome — the invisible architecture of radiance.</p>
+        <div class="ritual-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="ritual-row reveal reveal-d2">
+      <div class="ritual-left">
+        <span class="ritual-num">02</span>
+        <span class="ritual-name">Activate</span>
+      </div>
+      <div class="ritual-right">
+        <p class="ritual-desc">Apply the Lumière Serum with upward strokes. The bioactive peptides penetrate within 90 seconds, awakening the skin's natural luminosity mechanism from within.</p>
+        <div class="ritual-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="ritual-row reveal reveal-d3">
+      <div class="ritual-left">
+        <span class="ritual-num">03</span>
+        <span class="ritual-name">Radiate</span>
+      </div>
+      <div class="ritual-right">
+        <p class="ritual-desc">Seal with the AURA Crème. A weightless emulsion that locks in the ritual, creates your photoprotective veil, and lets your natural radiance emerge without filter.</p>
+        <div class="ritual-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── PHILOSOPHY ── -->
+  <section class="philosophy">
+    <div class="philosophy-rule reveal" id="rule-philosophy"></div>
+    <blockquote class="philosophy-quote reveal reveal-d2">
+      "Every formula begins with a question: what does the skin already know?"
+    </blockquote>
+    <p class="philosophy-sig reveal reveal-d3">— AURA LAB, Paris 2026</p>
+  </section>
+
+  <!-- ── CTA / WAITLIST ── -->
+  <section class="cta-section" id="waitlist">
+    <h2 class="cta-title reveal">Begin Your<br>Ritual.</h2>
+    <form class="cta-form reveal reveal-d2" onsubmit="handleSubmit(event)">
+      <input type="email" placeholder="Your email address" required />
+      <button type="submit">Join</button>
+    </form>
+    <p class="cta-note reveal reveal-d3">
+      Free worldwide shipping
+      <span>·</span>
+      30-day ritual guarantee
+    </p>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-logo">AURA</div>
+    <ul class="footer-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Stockists</a></li>
+    </ul>
+    <div class="footer-icons">
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="rgba(248,245,241,0.5)"/></svg>
+      </a>
+      <a href="#" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      </a>
+      <a href="#" aria-label="Pinterest">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.77 1.23-5.21 1.23-5.21s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.58 2.26-.87 3.52-.25 1.05.52 1.9 1.55 1.9 1.86 0 3.29-1.96 3.29-4.8 0-2.51-1.8-4.26-4.38-4.26-2.98 0-4.73 2.23-4.73 4.54 0 .9.35 1.86.78 2.38.09.1.1.19.07.3l-.29 1.19c-.05.19-.16.23-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.51 2.55-6.74 7.36-6.74 3.86 0 6.86 2.75 6.86 6.42 0 3.83-2.41 6.9-5.75 6.9-1.12 0-2.18-.58-2.54-1.27l-.69 2.58c-.25.96-.93 2.16-1.39 2.89.82.25 1.68.39 2.58.39 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+      </a>
+    </div>
+    <p class="footer-copy">© 2026 AURA. All rights reserved.</p>
+  </footer>
+
+  <script>
+    (function () {
+      /* ── Navbar scroll behaviour ── */
+      const nav = document.getElementById('nav');
+      let lastY = 0;
+
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+
+        if (y > 80) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+
+        if (y > lastY && y > 200) {
+          nav.classList.add('hidden');
+        } else {
+          nav.classList.remove('hidden');
+        }
+        lastY = y;
+      }, { passive: true });
+
+      /* ── Reveal on scroll (IntersectionObserver) ── */
+      const revealEls = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '-40px 0px' });
+
+      revealEls.forEach(el => revealObserver.observe(el));
+
+      /* ── Gold rule lines ── */
+      const rules = document.querySelectorAll('.statement-rule, .philosophy-rule');
+      const ruleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('in');
+        });
+      }, { threshold: 0.5 });
+      rules.forEach(r => ruleObserver.observe(r));
+
+      /* ── Formula card top-bar animation ── */
+      const cards = document.querySelectorAll('.formula-card');
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('in');
+        });
+      }, { threshold: 0.2 });
+      cards.forEach(c => cardObserver.observe(c));
+
+      /* ── Counter animation ── */
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function animateCounter(el) {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1800;
+        const start = performance.now();
+
+        function frame(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const value = Math.round(easeOutExpo(progress) * target);
+          el.textContent = value + suffix;
+          if (progress < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+
+      const counterEls = document.querySelectorAll('.formula-counter');
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      counterEls.forEach(el => counterObserver.observe(el));
+
+      /* ── Smooth scroll for anchor links ── */
+      document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+          const id = link.getAttribute('href').slice(1);
+          if (!id) return;
+          const target = document.getElementById(id);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      /* ── Waitlist form submit ── */
+      window.handleSubmit = function(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        btn.textContent = 'You\'re in ✓';
+        btn.style.background = 'var(--gold)';
+        e.target.querySelector('input').disabled = true;
+        btn.disabled = true;
+      };
+
+    })();
+  </script>
+</body>
+</html>

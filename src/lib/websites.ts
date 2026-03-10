@@ -41,6 +41,19 @@ export const websites: WebsiteMeta[] = [
     date: "2026-03",
     featured: true,
   },
+  {
+    slug: "aura",
+    title: "AURA",
+    description:
+      "Landing page cosmétique premium avec animation CGI 3D, blend vidéo éditorial et palette ivoire chaud.",
+    style: "editorial",
+    category: "landing",
+    accentColor: "#B8956A",
+    tags: ["landing", "cosmetic", "editorial", "luxury"],
+    url: "/sites/aura/index.html",
+    date: "2026-03",
+    featured: true,
+  },
 ];
 
 export const websiteStyleLabels: Record<WebsiteStyle, string> = {
